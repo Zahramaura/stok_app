@@ -63,10 +63,12 @@ Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
          */
         Route::controller(supliercontroller::class)->group(function(){
             Route::get('/suplier', 'index');
+            
+            Route::get('/suplier/add', 'create');
         });
 
 
 
-        
+
 
 });
