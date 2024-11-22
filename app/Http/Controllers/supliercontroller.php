@@ -35,7 +35,11 @@ class supliercontroller extends Controller
      */
     public function create()
     {
-        return view('suplier.add-suplier');
+        
+        return view('suplier.add-suplier', compact(
+            'getsuplier',
+        ));
+            
     }
 
     /**
@@ -88,7 +92,10 @@ class supliercontroller extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $getsuplier = suplier::find($id);
+        return view('suplier.edit-suplier', compact(
+            'getsuplier',
+        ));
     }
 
     /**
@@ -96,7 +103,36 @@ class supliercontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama_suplier' => 'required',
+            'email' => 'required|email',
+            'alamat' => 'required',
+            'telp' => 'required',
+            'tgl_terdaftar' => 'required',
+            'status' => 'required',
+        ], [
+            'nama_suplier.required' => 'Data wajib diisi!',
+            'email.required' => 'Data wajib diisi!',
+            'email.email' => 'Format email tidak sesuai!',
+            'alamat.required' => 'Data wajib diisi!',
+            'telp.required' => 'Data wajib diisi!',
+            'tgl_terdaftar.required' => 'Data wajib diisi!',
+            'status.required' => 'Data wajib diisi!',
+        ]);
+
+        $savesuplier = suplier::find($id);
+        $savesuplier->nama_suplier = $request->nama_suplier;
+        $savesuplier->alamat = $request->alamat;
+        $savesuplier->telp = $request->telp;
+        $savesuplier->email = $request->email;
+        $savesuplier->tgl_terdaftar = $request->tgl_terdaftar;
+        $savesuplier->status = $request->status;
+        $savesuplier->save();
+
+        return redirect('/suplier')->with(
+            'message',
+            'Data' . $request->nama_suuplier . 'berhasil diperbarui!!'
+        );
     }
 
     /**
