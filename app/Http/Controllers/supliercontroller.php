@@ -36,9 +36,7 @@ class supliercontroller extends Controller
     public function create()
     {
         
-        return view('suplier.add-suplier', compact(
-            'getsuplier',
-        ));
+        return view('suplier.add-suplier');
             
     }
 
@@ -140,6 +138,12 @@ class supliercontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $getsuplier = suplier::find($id);
+        $getsuplier->delete();
+
+        return redirect()->back()->with(
+            'message',
+            'Data' . $getsuplier->nama_suplier . 'berhasil dihapus',
+        );
     }
 }
