@@ -12,7 +12,10 @@ class pelanggancontroller extends Controller
      */
     public function index()
     {
-        return view('pelanggan.pelanggan');
+        $getData = pelanggan::paginate();
+        return view('pelanggan.pelanggan', compact(
+            'getData',
+        ));
     }
 
     /**
@@ -65,7 +68,10 @@ class pelanggancontroller extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $getData = pelanggan::find($id);
+        return view('pelanggan.edit-pelanggan', compact(
+            'detData',
+        ));
     }
 
     /**
@@ -73,14 +79,49 @@ class pelanggancontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama_pelanggan' => 'required',
+            'telp' => 'required',
+            'jenis_kelamin' => 'required',
+            'alamat' => 'required',
+            'kota' => 'required',
+            'provinsi' => 'required'
+        ], [
+            'nama_pelanggan.require' => 'Data wajib diisi!!!',
+            'telp.required' => 'Data wajib diisi!!!',
+            'jenis_kelamin.requied' => 'Data wajin diisi!!!',
+            'alamat.required' => 'Data wajib diisi!!!',
+            'kota.required' => 'Data wajib diisi!!!',
+            'provinsi.required' => 'Data wajib disi!!!',
+        ]);
+        
+        $updatepelanggan = pelanggan::fin($id);
+        $updatepelanggan->nama_pelanggan = $request->nama_pelanggan;
+        $updatepelanggan->telp = $request->telp;
+        $updatepelanggan->jenis_kelamin = $request->jenis_kelamin;
+        $updatepelanggan->alamat = $request->alamat;
+        $updatepelanggan->kota = $request->kota;
+        $updatepelanggan->provinsi = $request->provinsi;
+        $updatepelanggan->save();
+
+        return redirect('/pelanggan')->with(
+            'mwssage',
+            'Data pelangan' . $request->nama_pelanggan. 'berhasil diperbrui'
+        );
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $data = pelanggan::find($id);
+        $data->delete();
+
+        return redirect()->back()->with(
+            'message',
+            'Data pelanggan'. $data->nama_pelanggan . 'berhasil dihapus'
+        );
     }
 }
