@@ -28,7 +28,8 @@ Stok
                                         <label class="form-label" for="kode_barang">Kode Barang</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white"><i class="bi bi-upc-scan"></i></span>
-                                            <input type="text" value="{{ old('kode_barang', $getDataStokId->kode_barang) }}" name="kode_barang" id="kode_barang" class="form-control @error('kode_barang') is-invalid @enderror" placeholder="Masukkan Kode Barang...."/>
+                                            <input type="text" value="{{ old('kode_barang', $getDataStokId->kode_barang) }}" name=" $request->validate([
+        );" id="kode_barang" class="form-control @error('kode_barang') is-invalid @enderror" placeholder="Masukkan Kode Barang...."/>
                                             @error('kode_barang')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -57,7 +58,8 @@ Stok
                                 <label class="form-label" for="harga">Harga Barang</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary text-white"><i class="bi bi-cash-coin"></i></span>
-                                    <input type="text" value="{{ old('harga', $getDataStokId->harga) }}" name="harga" id="harga" class="form-control @error('harga') is-invalid @enderror" placeholder="Masukkan Harga List Barang...."/>
+                                    <input type="text" value="{{ old('harga', $getDataStokId->harga) }}" name=" $request->validate(
+        );" id="harga" class="form-control @error('harga') is-invalid @enderror" placeholder="Masukkan Harga List Barang...."/>
                                     @error('harga')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -72,7 +74,9 @@ Stok
                                         <label class="form-label" for="stok">Stok Barang Saat Ini</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white"><i class="bi bi-upc-scan"></i></span>
-                                            <input readonly type="text" value="{{ old('stok', $getDataStokId->stok) }}" name="stok" id="stok" class="form-control @error('stok') is-invalid @enderror" placeholder="Masukkan Stok Barang...." style="background-color: #BFBFBF"/>
+                                            <input readonly type="text" value="{{ old('stok', $getDataStokId->stok) }}" name=" $request->validate([
+          
+        );" id="stok" class="form-control @error('stok') is-invalid @enderror" placeholder="Masukkan Stok Barang...." style="background-color: #BFBFBF"/>
                                             @error('stok')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -86,14 +90,16 @@ Stok
                                         <label class="form-label" for="suplier"> Suplier</label>
                                         <div class="input-group">
                                             <span class="input-group-text text-light bg-primary"><i class="bi bi-person-bounding-box"></i></span>
-                                            <select name="suplier" class="form-control @error('suplier') is-invalid @enderror" id="suplier">
+                                            <select name=" $request->validate([
+            
+        );" class="form-control @error('suplier') is-invalid @enderror" id="suplier">
                                                 <option value="">--Pilih Suplier--</option>
-                                                {{-- @foreach ($suplier as $item)
+                                                @foreach ($suplier as $item)
                                                     <option value="{{ $item->id }}" 
                                                         {{ (old('suplier') ? old('suplier') : $getDataStokId->getSuplier->id) == $item->id ? 'selected' : '' }}>
                                                         {{ $item->nama_suplier }}
                                                     </option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                             @error('suplier')
                                                 <div class="invalid-feedback">
@@ -109,7 +115,9 @@ Stok
                                 <label class="form-label" for="cabang">Cabang</label>
                                 <div class="input-group">
                                     <span class="input-group-text text-light bg-primary"><i class="bi bi-map"></i></span>
-                                    <input readonly type="text" value="Palembang" name="cabang" id="cabang" class="form-control @error('cabang') is-invalid @enderror" style="background-color: #BFBFBF" />
+                                    <input  readonly="text" value="{{$getDataStokId->cabang}}" name=" $request->validate([
+           
+        );" id="cabang" class="form-control @error('cabang') is-invalid @enderror" style="background-color: #BFBFBF" />
                                     @error('cabang')
                                         <div class="invalid-feedback">
                                             {{ $message }}

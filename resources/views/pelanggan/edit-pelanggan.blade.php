@@ -51,7 +51,11 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="jenis_kelamin">Jenis Kelamin</label>
                                 <div class="input-group">
-                                  
+                                  <select value="{{ old('jenis_kelamin') ?? '' }}" name="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
+                                <option value="">--jenis kelamin--</option>
+                                <option value="laki-laki" {{ old('jenis_kelamin', $getData->jenis_kelamin == 'laki-laki' ? 'selected' : '') }}>laki-laki</option>
+                                <option value="perempuan" {{ old ('jenis_kelamin', $getData->jenis_kelamin == 'perempuan' ? 'selected' : '') }}>perempuan</option>
+                                </select>
                                   <span class="input-group-text"><i class="bi bi-caret-down-fill"></i></span>
                                 </div>
                                 @error('jenis_kelamin')
