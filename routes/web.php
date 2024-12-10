@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authcontroller;
+use App\Http\Controllers\barangMasukcontroller;
 use App\Http\Controllers\dashboardcontroller;
 use App\Http\Controllers\pegawaicontroller;
 use App\Http\Controllers\pelanggancontroller;
@@ -16,20 +17,8 @@ Route::get('/', function () {
 Route::get('/', [Authcontroller::class, 'index']);
 Route::post('/', [Authcontroller::class, 'login_proses']);
 
-Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
-
+Route::middleware(['auth', 'ceklevel:superadmin'])->group(function(){
      /**
-      * ini routing tombol logout!!!
-      */
-    Route::get('/logout', [Authcontroller::class, 'logout']);
-
-    /**
-     * ini routing dashboard controller
-     */
-    Route::get('/dashboard', [dashboardcontroller::class, 'index']);
-    
-       
-    /**
      * ini routing untuk pegawai controller
      */
     Route::controller(pegawaicontroller::class )->group(function(){
@@ -44,6 +33,23 @@ Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
 
     });
 
+});
+
+Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
+
+     /**
+      * ini routing tombol logout!!!
+      */
+    Route::get('/logout', [Authcontroller::class, 'logout']);
+
+    /**
+     * ini routing dashboard controller
+     */
+    Route::get('/dashboard', [dashboardcontroller::class, 'index']);
+    
+       
+  
+
     /**
      * ini route stok
      */
@@ -54,13 +60,19 @@ Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
         Route::post('/stok/add', 'store')->name('savestok');
 
         Route::get('/stok/edit/{id}', 'edit');
-        Route::post('/stok/edit/{id}', 'edit', 'update');
+        Route::post('/stok/edit/{id}', 'update');
 
     });
 
      /**
       * ini route barang masuk
       */
+      Route::controller(barangMasukcontroller::class)->group(function(){
+        
+        Route::get('/barang-Masuk', 'index');
+
+        Route::get('/barang-Masuk/add', 'create');
+      });
 
       /**
        * ini route barang keluar
