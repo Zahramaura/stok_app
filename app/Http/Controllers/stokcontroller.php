@@ -18,7 +18,7 @@ class stokcontroller extends Controller
         ->where('kode_barang', 'like', "%{$search}%")
         ->orWhere('nama_barang', 'like', "%{$search}%")
         ->paginate(6);
-        return view('Stok.stok', compact(
+        return view('stok.stok', compact(
             'getData'
         ));
     }
@@ -28,9 +28,9 @@ class stokcontroller extends Controller
      */
     public function create()
     {
-        $getsuplier = suplier::all();
+        $getSuplier = suplier::all();
         return view('stok.add-stok', compact(
-            'getsuplier'
+            'getSuplier'
         ));
     }
 
