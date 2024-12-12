@@ -46,10 +46,14 @@
                                 <div class="input-group">
                                     <span class="input-group-text text-light bg-primary"><i class="bi bi-person-bounding-box"></i></span>
                                     <select name="nama_barang_id" class="form-control @error('nama_barang_id') is-invalid @enderror" id="nama_barang_id">
-                                        <option value="">--Pilih Nama Barang--</option>
+                                        <option value="">Kode Barang ===> Nama Barang ===> Suplier ===> Stok ===> Harga</option>
                                         @foreach ($getnama_barang_id as $item)
                                             <option value="{{ $item->id }}" {{ old('nama_barang_id') == $item->id ? 'selected' : '' }}>
-                                                {{ $item->kode_barang }} ===> {{ $item->nama_barang }}  ===> {{ $item->getSuplier->nama_suplier }}
+                                                {{ $item->kode_barang }}
+                                                 ===> {{ \illuminate\support\str::limit ($item->nama_barang, 20, '...') }} 
+                                                  ===> {{ $item->getSuplier->nama_suplier }} 
+                                                  ===> {{ $item->stok }} ===>{{ 'Rp' . number_format($item->harga, 0, ',', '.') }}
+                                                  
                                             </option>
                                         @endforeach
                                     </select>
