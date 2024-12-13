@@ -73,6 +73,9 @@ Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
 
         Route::get('/barang-Masuk/add', 'create');
         Route::post('/barang-Masuk/add', 'store');
+
+        Route::get('/barang-masuk/{id}', 'destroy');
+        
       });
 
       /**

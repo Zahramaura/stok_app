@@ -12,9 +12,26 @@ class barangMasukcontroller extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = barangMasuk::with(
+            'getStok',
+            'getSuplier',
+            'getAdmin',
+
+        );
+
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween('tanggal_faktur', [$request->tanggal_awal, $request->tanggal_akhir,]);
+        }
+
+        $query->orderBy('created_at', 'desc'); //ascending /descending
+        $getData = $query->paginate(5);
+
+        return view('Barang.BarangMasuk.barang-Masuk', compact(
+            'getData',
+        ));
+
     }
 
     /**
@@ -47,18 +64,18 @@ class barangMasukcontroller extends Controller
                  $harga_beli = $updatestok->harga;
         }
 
-        $savebarangMasuk = new barangMasuk();
-        $savebarangMasuk->tanggal_faktur = $request->tanggal_faktur;
-        $savebarangMasuk->nama_barang_id = $request->nama_barang_id;
-        $savebarangMasuk->suplier_id = $updatestok->suplier_id;
-        $savebarangMasuk->harga_beli = $request->harga_beli;
-        $savebarangMasuk->jumlah_barang_masuk = $request->jumlah;
-        $savebarangMasuk->admin_id = Auth::user()->id;
-        // dd($savebarangMasuk);
-        $savebarangMasuk->save();
+            $savebarangMasuk = new barangMasuk();
+            $savebarangMasuk->tanggal_faktur = $request->tanggal_faktur;
+            $savebarangMasuk->nama_barang_id = $request->nama_barang_id;
+            $savebarangMasuk->suplier_id = $updatestok->suplier_id;
+            $savebarangMasuk->harga_beli = $request->harga_beli;
+            $savebarangMasuk->jumlah_barang_masuk = $request->jumlah;
+            $savebarangMasuk->admin_id = Auth::user()->id;
+            // dd($savebarangMasuk);
+            $savebarangMasuk->save();
 
-        $hitung = $updatestok->stok + $request->jumlah;
-        $updatestok->stok = $hitung;
+            $hitung = $updatestok->stok + $request->jumlah;
+            $updatestok->stok = $hitung;
         // dd($hitung)
         $updatestok->save();
 
@@ -96,6 +113,23 @@ class barangMasukcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $barangMasuk = barangMasuk::find($id);
+            $get_Id_Stok = $barangMasuk->nama_barang_id;
+            $get_jumlah_barang_barang_Masuk = $barangMasuk->jumlah_barang_masuk;
+
+            $getItemBarang =stok::find($get_Id_Stok);
+                $getStok = $getItemBarang->Stok;
+
+                $updateDataStok = $getStok - $get_jumlah_barang_barang_Masuk;
+
+                $getItemBarang->stok = $updateDataStok;
+                $getItemBarang->save();
+
+                $barangMasuk->delete();
+
+                return redirect()->back()->with(
+                    'message',
+                    'Data Barang Masuk' . $getItemBarang . ' berhasil dihapus'
+                );
     }
 }
