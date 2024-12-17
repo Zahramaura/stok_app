@@ -89,6 +89,7 @@ Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
             Route::get('/barangkeluar/add', 'index');
             Route::post('/barangkeluar/add', 'store');
 
+            Route::post('/barangKeluar/save', 'saveprocess')->name('addbarangKeluar');
 
 
       });
