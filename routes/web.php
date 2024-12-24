@@ -91,6 +91,10 @@ Route::middleware(['auth', 'ceklevel:superadmin,admin'])->group(function(){
 
             Route::post('/barangKeluar/save', 'saveprocess')->name('addbarangKeluar');
 
+            Route::get('/barang-Keluar/print/{id}', 'print');
+
+            Route::get('/barang-Keluar/{id}', 'destroy');
+
 
       });
 

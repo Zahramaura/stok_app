@@ -14,9 +14,26 @@ class barangKeluarcontroller extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('Barang.barangKeluar.barangKeluar');
+        $query = barangKeluar::with('getUser', 'getPelanggan', 'getStok');
+        if($request->filled('tanggak_awal') && $request->filled('tanggal_akhir')) {
+            $query->whereBetween('tgl_buat', [
+                $request->tanggal_awal,
+                $request->tanggal_akhir
+            ]);
+        }
+
+        $query->orderBy('created_at', 'desc');
+
+        $getBarangKeluar = $query->paginate(14);
+
+        $getTotalPendapatan = barangKeluar::sum('sub_total');
+
+        return view('Barang.barangKeluar.barangKeluar', compact(
+            'getbarangKeluar',
+            'getTotalPendapatan'
+        ));
     }
 
     /**
@@ -167,6 +184,35 @@ class barangKeluarcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $delete =barangKeluar::find($id);
+        $getIdBK = $delete->barang_id;
+        $getJumlahBK = $delete->jumlah_beli;
+
+        $update = stok::find($getIdBK);
+        $getStok = $update->stok;
+
+        $jumlahBaru = $getStok + $getJumlahBK;
+
+        $update->stok = $jumlahBaru;
+
+        $update->save();
+
+        $delete->delete();
+
+        return redirect()->back()->with(
+            'message',
+            'Data berhasil dihapus!!!'
+        );
+    }
+
+    public function print($id){
+        $dataPrint = barangKeluar::with(
+            'getStok',
+            'getPelanggan'
+        )->find($id);
+
+        return view('Nota.Nota', compact(
+            'dataPrint',
+        ));
     }
 }
